@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour{
     public GameObject Elegir;
     public GameObject Votar;
     public Text preguntatexto;
@@ -24,26 +23,22 @@ public class GameManager : MonoBehaviour
     private int puntajeTotal = 0;
     private bool respuestaSeleccionada = false;
 
-    private void Start()
-    {
+    private void Start(){
         Elegir.SetActive(true);
         Votar.SetActive(false);
         verpregunta();
     }
 
-    public void verpregunta()
-    {
+    public void verpregunta(){
         preguntatexto.text = Preguntas[nropregunta];
         int[] indices = { 0, 1, 2 };
         ShuffleArray(indices);
 
-        for (int i = 0; i < respuestacor.Length; i++)
-        {
+        for (int i = 0; i < respuestacor.Length; i++){
             string nombreRespuesta = "Respuesta" + (char)('A' + i);
             Text textoRespuesta = respuestacor[i].transform.Find(nombreRespuesta).GetComponent<Text>();
 
-            switch (indices[i])
-            {
+            switch (indices[i]){
                 case 0:
                     textoRespuesta.text = respuesta[nropregunta][0];
                     respuestacor[i].onClick.RemoveAllListeners();
@@ -67,16 +62,13 @@ public class GameManager : MonoBehaviour
         respuestaSeleccionada = false;
     }
 
-    private void SeleccionarRespuesta(int puntaje)
-    {
-        if (!respuestaSeleccionada)
-        {
+    private void SeleccionarRespuesta(int puntaje){
+        if (!respuestaSeleccionada){
             respuestaSeleccionada = true;
             puntajeTotal += puntaje;
             Debug.Log("Puntaje total: " + puntajeTotal);
 
-            if (textoPuntaje != null)
-            {
+            if (textoPuntaje != null){
                 textoPuntaje.text = "Puntaje: " + puntajeTotal.ToString();
             }
 
@@ -84,26 +76,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void sgtepregunta()
-    {
+    public void sgtepregunta(){
         nropregunta++;
-        if (nropregunta < Preguntas.Length)
-        {
+        if (nropregunta < Preguntas.Length){
             verpregunta();
         }
-        else
-        {
+        else{
             Debug.Log("Puntaje final: " + puntajeTotal);
             Elegir.SetActive(false);
             Votar.SetActive(true);
         }
     }
 
-    private void ShuffleArray<T>(T[] array)
-    {
+    private void ShuffleArray<T>(T[] array){
         int n = array.Length;
-        for (int i = n - 1; i > 0; i--)
-        {
+        for (int i = n - 1; i > 0; i--){
             int j = Random.Range(0, i + 1);
             T temp = array[i];
             array[i] = array[j];
