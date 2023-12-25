@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class Energia : MonoBehaviour
 {
     public GameObject Elegir;
     public GameObject Votar;
@@ -9,14 +9,12 @@ public class GameManager : MonoBehaviour
     public Button[] respuestacor;
     public Text textoPuntaje;
 
-
-    private string[] Preguntas = { "Solo un 15% de la tierra esta protegida. ¿Como evitarias perder mas naturaleza?", "¿Cual es tu maxima prioridad para los oceanos y canales?", "Los grupos locales e indigenas protegen el medio ambiente. ¿Como puedes ayudar?" };
+    private string[] Preguntas = { "La energia produce un 60% de las emisiones. ¿Que te gustaria?", "Calefaccion, luz y aire acondicionado consumen mucha energia. ¿Como reducirias ese gasto?", "Carbon, Petroleo y gas son contaminantes. ¿Que haces?" };
     private string[][] respuesta = {
-        new string[] { "Conservando bosques y tierras", "Creando mas parques urbanos", "Talando todos los arboles" },
-        new string[] { "Mantenerlos limpios", "Usar menos plastico", "Crear pesqueros mas grandes" },
-        new string[] { "Apoyando a comunidaes locales y pueblos indigenas", "Aprendiendo sobre su saber tradicionales", "Contaminando sus comunidades" }
+        new string[] { "Usar energias renovables, solar y eolica", "Usar los cultivos para crear combustible", "Construir plantas de carbon" },
+        new string[] { "Malgastando menos energia", "Diseñando edificios verde", "Dejando puesta la calefaccion" },
+        new string[] { "No quemas combustibles contaminantes", "Incentivar los productos verdes", "Contruyendo mas tuberias" }
     };
-
 
     private int puntajeCorrecta = 1000;
     private int puntajeSemicorrecta = 700;
@@ -25,8 +23,7 @@ public class GameManager : MonoBehaviour
     private int nropregunta = 0;
     private int puntajeTotal = 0;
     private bool respuestaSeleccionada = false;
-    private string respuestaSeleccionadaTexto;
-    private string respuestaSeleccionadaActual;
+    private string respuestaSeleccionadaTexto; 
 
     private void Start()
     {
@@ -79,10 +76,9 @@ public class GameManager : MonoBehaviour
             respuestaSeleccionada = true;
             puntajeTotal += puntaje;
 
+        
             respuestaSeleccionadaTexto = ObtenerTextoRespuestaSeleccionada();
-            respuestaSeleccionadaActual = respuestaSeleccionadaTexto;  // Nueva línea
 
-            Debug.Log("Respuesta almacenada: " + respuestaSeleccionadaTexto);
             Debug.Log("Puntaje total: " + puntajeTotal);
 
             sgtepregunta();
@@ -90,6 +86,7 @@ public class GameManager : MonoBehaviour
             if (nropregunta >= Preguntas.Length)
             {
                 PlayerPrefs.SetInt("PuntajeTotal", puntajeTotal);
+                PlayerPrefs.SetString("RespuestaSeleccionada", respuestaSeleccionadaTexto); 
                 PlayerPrefs.Save();
             }
         }
@@ -97,16 +94,16 @@ public class GameManager : MonoBehaviour
 
     private string ObtenerTextoRespuestaSeleccionada()
     {
-        string respuesta = "";
-
         for (int i = 0; i < respuestacor.Length; i++)
         {
-            string nombreRespuesta = "Respuesta" + (char)('A' + i);
-            Text textoRespuesta = respuestacor[i].transform.Find(nombreRespuesta).GetComponent<Text>();
-            respuesta = textoRespuesta.text;
+            if (respuestacor[i].interactable == false) 
+            {
+                string nombreRespuesta = "Respuesta" + (char)('A' + i);
+                Text textoRespuesta = respuestacor[i].transform.Find(nombreRespuesta).GetComponent<Text>();
+                return textoRespuesta.text;
+            }
         }
-
-        return respuesta;
+        return "";
     }
 
     public void sgtepregunta()
@@ -136,3 +133,4 @@ public class GameManager : MonoBehaviour
         }
     }
 }
+
